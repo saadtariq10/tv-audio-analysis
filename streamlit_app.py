@@ -8,13 +8,7 @@ from pydub.utils import mediainfo
 import spacy
 import shutil
 
-# Download the spaCy model if it's not already installed
-try:
-    spacy.load("en_core_web_sm")  # Try loading the model to check if it's installed
-except OSError:
-    spacy.cli.download("en_core_web_sm")  # Download it if it's not installed
-
-
+spacy.load("en_core_web_sm")  # Try loading the model to check if it's installed
 # Function to get audio duration
 def get_audio_duration(filename):
     """
