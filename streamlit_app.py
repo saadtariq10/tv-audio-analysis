@@ -6,6 +6,7 @@ from datetime import timedelta
 import os
 from pydub.utils import mediainfo
 import spacy
+import shutil
 
 # Download the spaCy model if it's not already installed
 try:
@@ -42,9 +43,13 @@ def process_audio(path):
         if chunk.endswith(".wav"):
             st.write(f"Sending {chunk} for STT...")
 
-            # Process the chunk for STT
-            transcription = send_audio_for_stt(f'audio_chunks/{chunk}')
-            st.write(f"Transcription for {chunk}: {transcription}")
+            try:
+                # Process the chunk for STT
+                transcription = send_audio_for_stt(f'audio_chunks/{chunk}')
+                st.write(f"Transcription for {chunk}: {transcription}")
+            except Exception as e:
+                st.write(f"Error in STT for {chunk}: {e}")
+                continue
             
             # Step 3: Extract company names from transcription using NER
             companies = extract_company_name_from_text(transcription)
@@ -69,7 +74,22 @@ def process_audio(path):
             # Step 5: Update start time for the next chunk
             start_time = start_time + timedelta(seconds=get_audio_duration(f'audio_chunks/{chunk}'))
 
+    # Step 6: Cleanup temporary audio chunks
+    clean_temp_folder('audio_chunks')
+
     return results
+
+# Function to clean the temporary folder
+def clean_temp_folder(folder):
+    """
+    Clean up the temporary folder by deleting all files and folder itself.
+    """
+    if os.path.exists(folder):
+        for file in os.listdir(folder):
+            file_path = os.path.join(folder, file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        os.rmdir(folder)
 
 # Streamlit UI for the application
 def main():
