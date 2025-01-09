@@ -7,3 +7,5 @@ spacy
 groq
 ffmpeg
 ffmpeg-python
+ffprobe
+ffprobe-python
