@@ -8,7 +8,15 @@ from pydub.utils import mediainfo
 import spacy
 import shutil
 
-spacy.load("en_core_web_sm")  # Try loading the model to check if it's installed
+# Load the model from the models folder
+try:
+    # Try loading the model from the local models folder
+    nlp = spacy.load("models/en_core_web_sm/en_core_web_sm-3.8.0")
+except OSError:
+    print("Model not found, please ensure it is installed.")
+    # Optionally, handle error or fallback behavior here
+
+
 # Function to get audio duration
 def get_audio_duration(filename):
     """
