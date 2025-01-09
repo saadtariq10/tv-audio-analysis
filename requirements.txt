@@ -6,3 +6,4 @@ streamlit
 spacy
 groq
 ffmpeg
+ffmpeg-python
