@@ -5,7 +5,7 @@ from ner_service import extract_company_name_from_text
 from datetime import timedelta
 import os
 from pydub.utils import mediainfo
-
+import spacy
 
 # Download the spaCy model if it's not already installed
 try:
